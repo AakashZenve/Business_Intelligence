@@ -724,14 +724,25 @@
     var ai = document.getElementById('ai');
     if (!ai || !ai.parentNode) return;
 
-    var existing = document.getElementById('zsda-root');
-    if (existing && existing.parentNode === ai.parentNode) return;
-
     injectStyle();
     ai.style.display = 'none'; // Replace the original Zenve AI signal card
 
+    var existing = document.getElementById('zsda-root');
+    if (existing && existing.parentNode === ai.parentNode) {
+      host = existing;
+      existing.style.removeProperty('display');
+      existing.style.display = '';
+      if (!existing.innerHTML.trim() || !existing.querySelector('.zsda-container')) {
+        render();
+      }
+      syncPeriodFromHeader();
+      return;
+    }
+
     host = existing || document.createElement('section');
     host.id = 'zsda-root';
+    host.style.removeProperty('display');
+    host.style.display = '';
     ai.parentNode.insertBefore(host, ai.nextSibling);
 
     render();
@@ -745,7 +756,7 @@
       tick = null;
       mount();
       syncPeriodFromHeader();
-    }, 120);
+    }, 80);
   }
 
   function init() {
@@ -762,10 +773,29 @@
       }
     }, true);
 
+    // Re-mount whenever navigation returns to Executive Dashboard
+    window.addEventListener('hashchange', function () {
+      var h = (window.location.hash || '').toLowerCase();
+      if (!h || h === '#' || h === '#overview' || h === '#executive-dashboard' || h === '#executive') {
+        mount();
+      }
+    });
+    window.addEventListener('popstate', function () {
+      mount();
+    });
+
     new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true });
     mount();
     setInterval(load, 60000);
   }
+
+  window.ZenveSalesDropAnalysis = {
+    mount: mount,
+    render: render,
+    show: function () {
+      mount();
+    }
+  };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

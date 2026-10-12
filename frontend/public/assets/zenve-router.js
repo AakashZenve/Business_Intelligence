@@ -12,7 +12,7 @@
     'zfa-root', 'zmkt-dashboard-root', 'zvp-root', 'zlog-dashboard-root',
     'zfsh-root', 'zb2b-root', 'zix-root', 'zsub-root', 'zrep-root',
     'zai-root', 'zalt-root', 'zaud-root', 'zsys-root', 'zset-root',
-    'zexec-root', 'zfc-root', 'zf-root', 'zt-root', 'zsda-root',
+    'zexec-root', 'zfc-root', 'zf-root', 'zt-root',
     'zhr-all-employees-root', 'zhr-attendance-root', 'zhr-departments-root',
     'zhr-expenses-root', 'zhr-performance-root', 'zhr-productivity-root',
     'zhr-targets-root', 'zhr-leave-root', 'zhr-onboarding-root',
@@ -578,6 +578,24 @@
         history.replaceState(null, document.title, window.location.pathname + window.location.search);
       }
     } catch (e) {}
+
+    // When returning to Executive Dashboard overview, ensure ZENVE AI SIGNAL · SALES DROP ANALYSIS is visible
+    if (!exceptRootId) {
+      try {
+        var zsdaEl = document.getElementById('zsda-root');
+        if (zsdaEl) {
+          zsdaEl.style.removeProperty('display');
+          zsdaEl.style.display = '';
+        }
+        var aiCardEl = document.getElementById('ai');
+        if (aiCardEl) {
+          aiCardEl.style.display = 'none';
+        }
+        if (window.ZenveSalesDropAnalysis && typeof window.ZenveSalesDropAnalysis.mount === 'function') {
+          window.ZenveSalesDropAnalysis.mount();
+        }
+      } catch (e) {}
+    }
   }
 
   // Synchronize sidebar accordion expansion & sub-item active highlights
@@ -665,6 +683,9 @@
       syncSidebar('Executive Dashboard', 'Executive Dashboard');
       var retBtnHome = document.getElementById('z-floating-return-btn');
       if (retBtnHome) retBtnHome.style.display = 'none';
+      if (window.ZenveSalesDropAnalysis && typeof window.ZenveSalesDropAnalysis.mount === 'function') {
+        window.ZenveSalesDropAnalysis.mount();
+      }
       if (window.ZenveDragonLoader) {
         window.ZenveDragonLoader.hide();
       }
@@ -937,6 +958,9 @@
           syncSidebar('Executive Dashboard', 'Executive Dashboard');
           var retBtnHome2 = document.getElementById('z-floating-return-btn');
           if (retBtnHome2) retBtnHome2.style.display = 'none';
+          if (window.ZenveSalesDropAnalysis && typeof window.ZenveSalesDropAnalysis.mount === 'function') {
+            window.ZenveSalesDropAnalysis.mount();
+          }
           return;
         }
 

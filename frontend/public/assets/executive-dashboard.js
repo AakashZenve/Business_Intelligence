@@ -54,6 +54,9 @@
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    if (window.ZenveSalesDropAnalysis && typeof window.ZenveSalesDropAnalysis.mount === 'function') {
+      window.ZenveSalesDropAnalysis.mount();
+    }
   }
 
   function tabFromHash(hash) {
@@ -511,6 +514,9 @@
     S.open = false;
     document.documentElement.classList.remove('zexec-locked');
     document.body.classList.remove('zexec-locked');
+    if (window.ZenveSalesDropAnalysis && typeof window.ZenveSalesDropAnalysis.mount === 'function') {
+      window.ZenveSalesDropAnalysis.mount();
+    }
   }
 
   function onHashChange() {
