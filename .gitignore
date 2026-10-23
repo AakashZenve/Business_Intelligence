@@ -50,3 +50,6 @@ scratch/
 
 # Docker
 *.pid
+
+# Temporary
+S/
