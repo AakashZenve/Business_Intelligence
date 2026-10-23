@@ -45,5 +45,8 @@ frontend/.env.local
 test_pipeline.csv
 scratch/
 
+# Documents & Reports
+*.docx
+
 # Docker
 *.pid
